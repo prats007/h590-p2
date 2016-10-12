@@ -1,0 +1,87 @@
+
+	<!doctype html>
+	<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<title>Mapping with D3 | Visible Data</title>
+		<script src="http://d3js.org/d3.v3.min.js" type="text/javascript"></script>
+		<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+
+	</head>
+
+	<title>
+
+	<style type="text/css">
+	.counties path {
+	  stroke: #fff;
+	  stroke-width: .5px;
+	  stroke-opacity: .5;
+	  fill: #81abce;
+	}
+	.states {
+	  stroke: #fff;
+	  stroke-width: 1px;
+	  fill: none;
+	}
+	.counties path:hover {
+	  fill: Steelblue;
+	}
+	</style>
+	</title>
+	<body>
+	<p id="caption">Hover over a county</p>
+
+
+	<div id="usMap">
+
+	</div>
+
+	<script type="text/javascript">
+	var KEY = "3caf0eab5ae9ccdd22d3119e6dda1bc77d8e8aa2";
+	var APIURL = "http://api.census.gov/data/2015/acs1?get=NAME,B01001_001E&for=county:*&key=" + KEY;
+	var countiesJSON;
+	var statesJSON;
+	var APIData;
+
+	d3.json("data/states.json", function(statesJson){
+	console.log(statesJson);
+	statesJSON = statesJson;
+		d3.json("data/counties.json", function(countiesJson){
+		console.log(countiesJson);
+		countiesJSON = countiesJson;
+			$.getJSON( APIURL, function(apidata) {
+				APIData = apidata;
+				//data2[1][0] = county name
+				//data2[1][1] = county data
+				for(j=1;j<APIData.length; j++){ // j is for data2's length
+					//var id = data2[j][2] + data2[j][3];
+					for(i=0; i<countiesJSON.features.length; i++){
+						var id = countiesJSON.features[i].id;
+						id = id.substr(id.length - 3);
+						if(APIData[j][3] == id)
+						{var countyData = APIData[j][1];}
+					} //i for ends
+				}//J for ends
+				console.log(countyData);
+			}); //APIURL ends
+
+
+		}); // counties d3.json ends	
+
+		drawMap(statesJSON, countiesJSON);
+	}); // states d3.json ends
+	
+	function drawMap(statesJSON, countiesJSON){
+		
+	}
+
+
+	</script>
+
+	</article>
+		</div>
+		</div>
+	</body>
+	</html>
