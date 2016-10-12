@@ -95,14 +95,13 @@
 
 
 
-		var color = d3.scale.threshold()
-	    .domain([0.02, 0.04, 0.06, 0.08, 0.10])
-	    .range(["#2ed16f", "#24b55e", "#1d9b50", "#167f41", "#116834", "#054f23"]);	
-
-	    var color = d3.scale.log()
+	var color = d3.scale.log()
 	    .range(["hsl(62,100%,90%)", "hsl(228,30%,20%)"])
 	    .interpolate(d3.interpolateHcl);
 
+		var color = d3.scale.threshold()
+	    .domain([0.02, 0.04, 0.06, 0.08, 0.10])
+	    .range(["#2ed16f", "#24b55e", "#1d9b50", "#167f41", "#116834", "#054f23"]);	
 		var projection = d3.geo.albersUsa().scale(1200).translate([500, 280]);;
     	var path = d3.geo.path().projection(projection);
     	var stateIds = {};
@@ -115,9 +114,9 @@
 	    })
 	    var width = 960;
 	    var height = 600;
+//	    var color = d3.scale.category20();
 
 	    //console.log(path);
-	    color.domain([d3.quantile(densities, .01), d3.quantile(densities, .99)]);
 
     	map = d3.select('#usMap').append('svg')
         .style('width', width)
@@ -152,8 +151,8 @@
         //starter = caption.html();
 
         function showCaption(d, i) {
-	        console.log(d.properties.pp);
-	        if(d.properties.pp == ""){
+	        //console.log(d.properties.pp);
+	        if(d.properties.pp == undefined){
 	        	caption.html("No Data");
 	        }else{
 	        	caption.html(d.properties.pp);
