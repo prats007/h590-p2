@@ -1,0 +1,62 @@
+var urls = {
+    counties: "/data/us-counties.json",
+    states: "/data/us-states.json"
+}
+var width = 960,
+    height = 600;
+
+var map;
+var q = d3.queue()
+    .defer(d3.json, "/data/us-counties.json")
+    .defer(d3.json, "/data/us-states.json")
+    .await(ready);
+
+function ready(error, countylines, statelines) {
+    window.error = error;
+    window.countylines = countylines;
+    window.statelines = statelines;
+    var center = d3.geoCentroid(statelines);
+    if (error) throw error;
+    var projection = d3.geoAlbersUsa().scale(1200).translate([500, 280]);;
+    var path = d3.geoPath().projection(projection);
+    var stateIds = {};
+    statelines.features.forEach(function(d) {
+        stateIds[d.id] = d.properties.name;
+    });
+
+    countylines.features.forEach(function(d) {
+        d.properties.state = stateIds[d.id.slice(0, 2)];
+    })
+
+    // remove the loading text
+    d3.select('.loading').remove();
+    console.log(path);
+    map = d3.select('#map').append('svg')
+        .style('width', width)
+        .style('height', height);
+    var counties = map.append('g')
+        .attr('class', 'counties')
+        .selectAll('path')
+        .data(countylines.features)
+        .enter().append('path')
+        .attr('d', path);
+    counties.on('mouseover', showCaption)
+        .on('mousemove', showCaption)
+        .on('mouseout', function() {
+            caption.html(starter);
+        });
+    var states = map.append('g')
+        .attr('class', 'states')
+        .selectAll('path')
+        .data(statelines.features)
+        .enter().append('path')
+        .attr('d', path);
+    var caption = d3.select('#caption'),
+        starter = caption.html();
+
+    function showCaption(d, i) {
+        var name = [d.properties.name, d.properties.state].join(', ');
+        caption.html(name);
+    }
+
+};
