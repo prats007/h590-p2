@@ -14,16 +14,16 @@
 		  stroke: #fff;
 		  stroke-width: .5px;
 		  stroke-opacity: .5;
-		  fill: #81abce;
+		  fill: #ccc;
 		}
 		.states {
 		  stroke: #fff;
 		  stroke-width: 1px;
 		  fill: none;
 		}
-		.counties path:hover {
+/*		.counties path:hover {
 		  fill: Steelblue;
-		}
+		}*/
 		</style>
 	</head>
 
@@ -33,20 +33,70 @@
 	</title>
 	<body>
 	<p id="caption">Hover over a county</p>
+	
 	<select id="variableDrowpDown" onChange="">
-	   <option value="asd">Total Population</option>
+	   <option value="B01003001">Total Population within the locality</option>
 	   <option value="aasd">Median Household Income</option>
 	   <option value="sssd">Per Capita Income</option>
 
-	   <optgroup label="Median Age">
+	   <optgroup label="Median age by sex">
+	   		<optgroup label="Male">
+	   			<option value="B01001003">Under 5 Years</option>
+	   			<option value="B01001004">5 to 9 Years</option>
+	   			<option value="B01001005">10 to 14 Years</option>
+	   			<option value="B01001006">15 to 17 Years</option>
+	   			<option value="B01001007">18 and 19 Years</option>
+	   			<option value="B01001008">20 Years</option>
+	   			<option value="B01001009">21 Years</option>
+	   			<option value="B01001010">22 to 24 Years</option>
+	   			<option value="B01001011">25 to 29 Years</option>
+	   			<option value="B01001012">30 to 34 Years</option>
+	   			<option value="B01001013">35 to 39 Years</option>
+	   			<option value="B01001014">40 to 44 Years</option>
+	   			<option value="B01001015">45 to 49 Years</option>
+	   			<option value="B01001016">50 to 54 Years</option>
+	   			<option value="B01001017">55 to 59 Years</option>
+	   			<option value="B01001018">60 and 61 Years</option>
+	   			<option value="B01001019">62 to 64 Years</option>
+	   			<option value="B01001020">65 and 66 Years</option>
+	   			<option value="B01001021">67 to 69 Years</option>
+	   			<option value="B01001022">70 to 74 Years</option>
+	   			<option value="B01001023">75 to 79 Years</option>
+	   			<option value="B01001024">80 to 84 Years</option>
+	   			<option value="B01001025">85 Years and over</option>
+	   		</optgroup>
+	   		<optgroup label="Female">
+	   			<option value="B01001027">Under 5 Years</option>
+	   			<option value="B01001028">5 to 9 Years</option>
+	   			<option value="B01001029">10 to 14 Years</option>
+	   			<option value="B01001030">15 to 17 Years</option>
+	   			<option value="B01001031">18 and 19 Years</option>
+	   			<option value="B01001032">20 Years</option>
+	   			<option value="B01001033">21 Years</option>
+	   			<option value="B01001034">22 to 24 Years</option>
+	   			<option value="B01001035">25 to 29 Years</option>
+	   			<option value="B01001036">30 to 34 Years</option>
+	   			<option value="B01001037">35 to 39 Years</option>
+	   			<option value="B01001038">40 to 44 Years</option>
+	   			<option value="B01001039">45 to 49 Years</option>
+	   			<option value="B01001040">50 to 54 Years</option>
+	   			<option value="B01001041">55 to 59 Years</option>
+	   			<option value="B01001042">60 and 61 Years</option>
+	   			<option value="B01001043">62 to 64 Years</option>
+	   			<option value="B01001044">65 and 66 Years</option>
+	   			<option value="B01001045">67 to 69 Years</option>
+	   			<option value="B01001046">70 to 74 Years</option>
+	   			<option value="B01001047">75 to 79 Years</option>
+	   			<option value="B01001048">80 to 84 Years</option>
+	   			<option value="B01001049">85 Years and over</option>
+	   		</optgroup>
 	       <option value="asdasd">Total</option>
 	       <option value="asdasd">Male</option>
 	       <option value="aa">Female</option>                               
 	   </optgroup>
-</select>
+	</select>
 
 	<div id="usMap">
-
 	</div>
 
 	<script type="text/javascript">
@@ -83,25 +133,19 @@
 
 				drawMap(statesJSON, countiesJSON);
 			}); //APIURL ends
-
-
 		}); // counties d3.json ends	
-
 	}); // states d3.json ends
 	
 	function drawMap(statesJSON, countiesJSON){
-
-		console.log(countiesJSON);
-
-
-
+	//console.log(countiesJSON);
 	var color = d3.scale.log()
 	    .range(["hsl(62,100%,90%)", "hsl(228,30%,20%)"])
 	    .interpolate(d3.interpolateHcl);
 
-		var color = d3.scale.threshold()
-	    .domain([0.02, 0.04, 0.06, 0.08, 0.10])
+		var color = d3.scale.linear()
+	    .domain([65000, 1212120])
 	    .range(["#2ed16f", "#24b55e", "#1d9b50", "#167f41", "#116834", "#054f23"]);	
+		
 		var projection = d3.geo.albersUsa().scale(1200).translate([500, 280]);;
     	var path = d3.geo.path().projection(projection);
     	var stateIds = {};
@@ -114,15 +158,13 @@
 	    })
 	    var width = 960;
 	    var height = 600;
-//	    var color = d3.scale.category20();
-
-	    //console.log(path);
 
     	map = d3.select('#usMap').append('svg')
         .style('width', width)
         .style('height', height);
 
         var counties = map.append('g')
+        .attr("class", "counties")
         .attr("stroke", function(d){
         	return "white";
         })
@@ -159,6 +201,16 @@
 	        }
 
     	}
+	}
+
+	function prepareURL(varID){
+		varID
+
+		if(varID.length==0){
+			
+		}
+
+		APIURL = "http://api.census.gov/data/2015/acs1?get=NAME,B01003_001E&for=county:*&key=" + KEY;
 	}
 
 
