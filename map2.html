@@ -1,39 +1,52 @@
+<!doctype html>
+<html lang="en">
 
-	<!doctype html>
-	<html lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-		<title>Mapping with D3 | Visible Data</title>
-		<script src="http://d3js.org/d3.v3.min.js" type="text/javascript"></script>
-		<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-		<style type="text/css">
-	
+	<title>Mapping with D3 | Visible Data</title>
+	<script src="http://d3js.org/d3.v3.min.js" type="text/javascript"></script>
+	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+	<style type="text/css">
 		.counties path {
-		  stroke: #fff;
-		  stroke-width: .5px;
-		  stroke-opacity: .5;
-		  fill: #ccc;
+			stroke: #fff;
+			stroke-width: .5px;
+			stroke-opacity: .5;
+			fill: #ccc;
 		}
+
 		.states {
-		  stroke: #fff;
-		  stroke-width: 1px;
-		  fill: none;
+			stroke: #fff;
+			stroke-width: 1px;
+			fill: none;
 		}
-/*		.counties path:hover {
-		  fill: Steelblue;
-		}*/
-		</style>
-	</head>
+				.counties path:hover {
+				stroke-width:3px;
+		}
 
-	<title>
+		#caption {
+			border-radius: 5px;
+			display: none;
+			background: hsla(0, 2%, 16%, 0.85);
+			padding: 5px;
+			position: absolute;
+			z-index: 1000;
+			width: 180px;
+			height: 30px;
+			color: #fff;
+		}
+	</style>
+</head>
+
+<title>
 
 
-	</title>
-	<body>
-	<p id="caption">Hover over a county</p>
-	
+</title>
+
+<body>
+	<div id="caption">Hover over a county</div>
+
 	<select id="variableDrowpDown" onChange="">
 	   <option value="B01003001">Total Population within the locality</option>
 	   <option value="aasd">Median Household Income</option>
@@ -92,7 +105,7 @@
 	   		</optgroup>
 	       <option value="asdasd">Total</option>
 	       <option value="asdasd">Male</option>
-	       <option value="aa">Female</option>                               
+	       <option value="aa">Female</option>
 	   </optgroup>
 	</select>
 
@@ -100,122 +113,131 @@
 	</div>
 
 	<script type="text/javascript">
-	var KEY = "3caf0eab5ae9ccdd22d3119e6dda1bc77d8e8aa2";
-	var APIURL = "http://api.census.gov/data/2015/acs1?get=NAME,B01003_001E&for=county:*&key=" + KEY;
-	var countiesJSON;
-	var statesJSON;
-	var APIData;
-	var valueById = {};
+		var KEY = "3caf0eab5ae9ccdd22d3119e6dda1bc77d8e8aa2";
+		var APIURL = "http://api.census.gov/data/2015/acs1?get=NAME,B01003_001E&for=county:*&key=" + KEY;
+		var countiesJSON;
+		var statesJSON;
+		var APIData;
+		var valueById = {};
 
-	d3.json("data/states.json", function(statesJson){
-	console.log(statesJson);
-	statesJSON = statesJson;
-		d3.json("data/counties.json", function(countiesJson){
-		console.log(countiesJson);
-		countiesJSON = countiesJson;
-			$.getJSON( APIURL, function(apidata) {
-				APIData = apidata;
-				//data2[1][0] = county name
-				//data2[1][1] = county data
-				for(j=1;j<APIData.length; j++){ // j is for APIData's length
-					//var id = data2[j][2] + data2[j][3];
-					var DataId = "" + APIData[j][2] + APIData[j][3];
-					for(i=0; i<countiesJSON.features.length; i++){
-						var id = countiesJSON.features[i].id;
-						if(id == DataId)
-						{
-							var countyData = APIData[j][1];
-							countiesJSON.features[i].properties.pp = APIData[j][1];	
-						}
-					} //i for ends
-				}//J for ends
-				console.log(countyData);
+		d3.json("data/states.json", function(statesJson) {
+			console.log(statesJson);
+			statesJSON = statesJson;
+			d3.json("data/counties.json", function(countiesJson) {
+				console.log(countiesJson);
+				countiesJSON = countiesJson;
+				$.getJSON(APIURL, function(apidata) {
+					APIData = apidata;
+					//data2[1][0] = county name
+					//data2[1][1] = county data
+					for (j = 1; j < APIData.length; j++) { // j is for APIData's length
+						//var id = data2[j][2] + data2[j][3];
+						var DataId = "" + APIData[j][2] + APIData[j][3];
+						for (i = 0; i < countiesJSON.features.length; i++) {
+							var id = countiesJSON.features[i].id;
+							if (id == DataId) {
+								var countyData = APIData[j][1];
+								countiesJSON.features[i].properties.pp = APIData[j][1];
+							}
+						} //i for ends
+					} //J for ends
+					console.log(countyData);
 
-				drawMap(statesJSON, countiesJSON);
-			}); //APIURL ends
-		}); // counties d3.json ends	
-	}); // states d3.json ends
-	
-	function drawMap(statesJSON, countiesJSON){
-	//console.log(countiesJSON);
-	var color = d3.scale.log()
-	    .range(["hsl(62,100%,90%)", "hsl(228,30%,20%)"])
-	    .interpolate(d3.interpolateHcl);
+					drawMap(statesJSON, countiesJSON);
+				}); //APIURL ends
+			}); // counties d3.json ends
+		}); // states d3.json ends
 
-		var color = d3.scale.linear()
-	    .domain([65000, 1212120])
-	    .range(["#2ed16f", "#24b55e", "#1d9b50", "#167f41", "#116834", "#054f23"]);	
-		
-		var projection = d3.geo.albersUsa().scale(1200).translate([500, 280]);;
-    	var path = d3.geo.path().projection(projection);
-    	var stateIds = {};
-	    statesJSON.features.forEach(function(d) {
-	        stateIds[d.id] = d.properties.name;
-	    });
+		function drawMap(statesJSON, countiesJSON) {
+			//console.log(countiesJSON);
+			var color = d3.scale.log()
+				.range(["hsl(62,100%,90%)", "hsl(228,30%,20%)"])
+				.interpolate(d3.interpolateHcl);
 
-	    countiesJSON.features.forEach(function(d) {
-	        d.properties.state = stateIds[d.id.slice(0, 2)];
-	    })
-	    var width = 960;
-	    var height = 600;
+			var color = d3.scale.linear()
+				.domain([65000, 1212120])
+				.range(["#2ed16f", "#24b55e", "#1d9b50", "#167f41", "#116834", "#054f23"]);
 
-    	map = d3.select('#usMap').append('svg')
-        .style('width', width)
-        .style('height', height);
+			var projection = d3.geo.albersUsa().scale(1200).translate([500, 280]);;
+			var path = d3.geo.path().projection(projection);
+			var stateIds = {};
+			statesJSON.features.forEach(function(d) {
+				stateIds[d.id] = d.properties.name;
+			});
 
-        var counties = map.append('g')
-        .attr("class", "counties")
-        .attr("stroke", function(d){
-        	return "white";
-        })
-        .attr("stroke-width", function(d){
-        	return "0.5px";
-        })
-        .selectAll('path')
-        	.data(countiesJSON.features)
-        .enter().append('path')
-        	.attr('d', path)
-        	.style("fill", function(d) { return color(d.properties.pp); });
+			countiesJSON.features.forEach(function(d) {
+				d.properties.state = stateIds[d.id.slice(0, 2)];
+			})
+			var width = 960;
+			var height = 600;
 
-        counties.on('mouseover', showCaption)
-        .on('mousemove', showCaption)
-        .on('mouseout', function() {
-            //caption.html(starter);
-        });
+			map = d3.select('#usMap').append('svg')
+				.style('width', width)
+				.style('height', height);
 
-        var states = map.append('g')
-        .attr('class', 'states')
-        .selectAll('path')
-        .data(statesJSON.features)
-        .enter().append('path')
-        .attr('d', path);
-    	var caption = d3.select('#caption');
-        //starter = caption.html();
+			var counties = map.append('g')
+				.attr("class", "counties")
+				.attr("stroke", function(d) {
+					return "white";
+				})
+				.attr("stroke-width", function(d) {
+					return "0.5px";
+				})
+				.selectAll('path')
+				.data(countiesJSON.features)
+				.enter().append('path')
+				.attr('d', path)
+				.style("fill", function(d) {
+					return color(d.properties.pp);
+				});
 
-        function showCaption(d, i) {
-	        //console.log(d.properties.pp);
-	        if(d.properties.pp == undefined){
-	        	caption.html("No Data");
-	        }else{
-	        	caption.html(d.properties.pp);
-	        }
+			counties.on('mouseover', showCaption)
+				.on('mousemove', showCaption)
+				.on('mouseout', function() {
+					caption.style("display", 'none');
+				});
 
-    	}
-	}
+			var states = map.append('g')
+				.attr('class', 'states')
+				.selectAll('path')
+				.data(statesJSON.features)
+				.enter().append('path')
+				.attr('d', path);
+			var caption = d3.select('#caption');
+			//starter = caption.html();
 
-	function prepareURL(varID){
-		varID
+			function showCaption(d, i) {
+				var e = window.event;
+				var x = e.clientX,
+					y = e.clientY;
+				x = x + "px";
+				y = y + "px";
+				caption.style("top", y); //= (y + 20) + 'px';
+				caption.style("left", x); //= (x + 20) + 'px';
+				caption.style("display", 'block');
+				//console.log(d.properties.pp);
+				if (d.properties.pp == undefined) {
+					caption.html("No Data");
+				} else {
+					caption.html(d.properties.name + "," + d.properties.state + "<br> Total Population " + d.properties.pp);
+				}
 
-		if(varID.length==0){
-			
+			}
+
 		}
 
-		APIURL = "http://api.census.gov/data/2015/acs1?get=NAME,B01003_001E&for=county:*&key=" + KEY;
-	}
+		function prepareURL(varID) {
+			varID
 
+			if (varID.length == 0) {
 
+			}
+
+			APIURL = "http://api.census.gov/data/2015/acs1?get=NAME,B01003_001E&for=county:*&key=" + KEY;
+		}
 	</script>
 
 	</article>
 </body>
+
 </html>
