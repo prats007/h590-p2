@@ -33,88 +33,93 @@
 	</title>
 	<body>
 	<p id="caption">Hover over a county</p>
-	
-	<select id="variableDrowpDown" onChange="">
-	   <option value="B01003001">Total Population within the locality</option>
-	   <option value="aasd">Median Household Income</option>
-	   <option value="sssd">Per Capita Income</option>
 
-	   <optgroup label="Median age by sex">
+	<select id="variableDrowpDown" onchange="prepareURL(this.value)">
+	   <option value="B01003_001E">Total Population within the locality</option>
+	   <option value="B19013_001E">Median Household Income</option>
+	   <option value="B19301_001E">Per Capita Income</option>
+	   <optgroup label="Age distribution broken down by sex">
 	   		<optgroup label="Male">
-	   			<option value="B01001003">Under 5 Years</option>
-	   			<option value="B01001004">5 to 9 Years</option>
-	   			<option value="B01001005">10 to 14 Years</option>
-	   			<option value="B01001006">15 to 17 Years</option>
-	   			<option value="B01001007">18 and 19 Years</option>
-	   			<option value="B01001008">20 Years</option>
-	   			<option value="B01001009">21 Years</option>
-	   			<option value="B01001010">22 to 24 Years</option>
-	   			<option value="B01001011">25 to 29 Years</option>
-	   			<option value="B01001012">30 to 34 Years</option>
-	   			<option value="B01001013">35 to 39 Years</option>
-	   			<option value="B01001014">40 to 44 Years</option>
-	   			<option value="B01001015">45 to 49 Years</option>
-	   			<option value="B01001016">50 to 54 Years</option>
-	   			<option value="B01001017">55 to 59 Years</option>
-	   			<option value="B01001018">60 and 61 Years</option>
-	   			<option value="B01001019">62 to 64 Years</option>
-	   			<option value="B01001020">65 and 66 Years</option>
-	   			<option value="B01001021">67 to 69 Years</option>
-	   			<option value="B01001022">70 to 74 Years</option>
-	   			<option value="B01001023">75 to 79 Years</option>
-	   			<option value="B01001024">80 to 84 Years</option>
-	   			<option value="B01001025">85 Years and over</option>
+	   			<option value="B01001_003E">Under 5 Years</option>
+	   			<option value="B01001_004E">5 to 9 Years</option>
+	   			<option value="B01001_005E">10 to 14 Years</option>
+	   			<option value="B01001_006E">15 to 17 Years</option>
+	   			<option value="B01001_007E">18 and 19 Years</option>
+	   			<option value="B01001_008E">20 Years</option>
+	   			<option value="B01001_009E">21 Years</option>
+	   			<option value="B01001_010E">22 to 24 Years</option>
+	   			<option value="B01001_011E">25 to 29 Years</option>
+	   			<option value="B01001_012E">30 to 34 Years</option>
+	   			<option value="B01001_013E">35 to 39 Years</option>
+	   			<option value="B01001_014E">40 to 44 Years</option>
+	   			<option value="B01001_015E">45 to 49 Years</option>
+	   			<option value="B01001_016E">50 to 54 Years</option>
+	   			<option value="B01001_017E">55 to 59 Years</option>
+	   			<option value="B01001_018E">60 and 61 Years</option>
+	   			<option value="B01001_019E">62 to 64 Years</option>
+	   			<option value="B01001_020E">65 and 66 Years</option>
+	   			<option value="B01001_021E">67 to 69 Years</option>
+	   			<option value="B01001_022E">70 to 74 Years</option>
+	   			<option value="B01001_023E">75 to 79 Years</option>
+	   			<option value="B01001_024E">80 to 84 Years</option>
+	   			<option value="B01001_025E">85 Years and over</option>
 	   		</optgroup>
 	   		<optgroup label="Female">
-	   			<option value="B01001027">Under 5 Years</option>
-	   			<option value="B01001028">5 to 9 Years</option>
-	   			<option value="B01001029">10 to 14 Years</option>
-	   			<option value="B01001030">15 to 17 Years</option>
-	   			<option value="B01001031">18 and 19 Years</option>
-	   			<option value="B01001032">20 Years</option>
-	   			<option value="B01001033">21 Years</option>
-	   			<option value="B01001034">22 to 24 Years</option>
-	   			<option value="B01001035">25 to 29 Years</option>
-	   			<option value="B01001036">30 to 34 Years</option>
-	   			<option value="B01001037">35 to 39 Years</option>
-	   			<option value="B01001038">40 to 44 Years</option>
-	   			<option value="B01001039">45 to 49 Years</option>
-	   			<option value="B01001040">50 to 54 Years</option>
-	   			<option value="B01001041">55 to 59 Years</option>
-	   			<option value="B01001042">60 and 61 Years</option>
-	   			<option value="B01001043">62 to 64 Years</option>
-	   			<option value="B01001044">65 and 66 Years</option>
-	   			<option value="B01001045">67 to 69 Years</option>
-	   			<option value="B01001046">70 to 74 Years</option>
-	   			<option value="B01001047">75 to 79 Years</option>
-	   			<option value="B01001048">80 to 84 Years</option>
-	   			<option value="B01001049">85 Years and over</option>
-	   		</optgroup>
-	       <option value="asdasd">Total</option>
-	       <option value="asdasd">Male</option>
-	       <option value="aa">Female</option>                               
+	   			<option value="B01001_027E">Under 5 Years</option>
+	   			<option value="B01001_028E">5 to 9 Years</option>
+	   			<option value="B01001_029E">10 to 14 Years</option>
+	   			<option value="B01001_030E">15 to 17 Years</option>
+	   			<option value="B01001_031E">18 and 19 Years</option>
+	   			<option value="B01001_032E">20 Years</option>
+	   			<option value="B01001_033E">21 Years</option>
+	   			<option value="B01001_034E">22 to 24 Years</option>
+	   			<option value="B01001_035E">25 to 29 Years</option>
+	   			<option value="B01001_036E">30 to 34 Years</option>
+	   			<option value="B01001_037E">35 to 39 Years</option>
+	   			<option value="B01001_038E">40 to 44 Years</option>
+	   			<option value="B01001_039E">45 to 49 Years</option>
+	   			<option value="B01001_040E">50 to 54 Years</option>
+	   			<option value="B01001_041E">55 to 59 Years</option>
+	   			<option value="B01001_042E">60 and 61 Years</option>
+	   			<option value="B01001_043E">62 to 64 Years</option>
+	   			<option value="B01001_044E">65 and 66 Years</option>
+	   			<option value="B01001_045E">67 to 69 Years</option>
+	   			<option value="B01001_046E">70 to 74 Years</option>
+	   			<option value="B01001_047E">75 to 79 Years</option>
+	   			<option value="B01001_048E">80 to 84 Years</option>
+	   			<option value="B01001_049E">85 Years and over</option>
+	   		</optgroup>                        
 	   </optgroup>
 	</select>
 
-	<div id="usMap">
+	<div >
+		<svg id="usMap" width="960" height="600"></svg>
 	</div>
+	<p id="totalPop">Total Population</p>
+	<p id="medianIncome">Median house hold income</p>
+	<p id="capitaIncome">Per Capita Income</p>
 
 	<script type="text/javascript">
 	var KEY = "3caf0eab5ae9ccdd22d3119e6dda1bc77d8e8aa2";
-	var APIURL = "http://api.census.gov/data/2015/acs1?get=NAME,B01003_001E&for=county:*&key=" + KEY;
+	var APIURL = "http://api.census.gov/data/2015/acs1?get=NAME,B01001_024E&for=county:*&key=" + KEY;
 	var countiesJSON;
 	var statesJSON;
 	var APIData;
 	var valueById = {};
+	var selectVariable = document.getElementById('variableDrowpDown');
+	getJsonFromURL();
+	var countyData;
 
-	d3.json("data/states.json", function(statesJson){
-	console.log(statesJson);
-	statesJSON = statesJson;
+	function getJsonFromURL(){
+		d3.json("data/states.json", function(statesJson){
+		//console.log(statesJson);
+		statesJSON = statesJson;
 		d3.json("data/counties.json", function(countiesJson){
-		console.log(countiesJson);
+		//console.log(countiesJson);
 		countiesJSON = countiesJson;
 			$.getJSON( APIURL, function(apidata) {
 				APIData = apidata;
+				console.log(apidata);
 				//data2[1][0] = county name
 				//data2[1][1] = county data
 				for(j=1;j<APIData.length; j++){ // j is for APIData's length
@@ -124,26 +129,31 @@
 						var id = countiesJSON.features[i].id;
 						if(id == DataId)
 						{
-							var countyData = APIData[j][1];
+							countyData = APIData[j][1];
 							countiesJSON.features[i].properties.pp = APIData[j][1];	
 						}
 					} //i for ends
 				}//J for ends
-				console.log(countyData);
-
+				console.log(countiesJSON);
+				
 				drawMap(statesJSON, countiesJSON);
+				//return countiesJSON;
 			}); //APIURL ends
 		}); // counties d3.json ends	
-	}); // states d3.json ends
+		}); // states d3.json ends
+	}
+
 	
 	function drawMap(statesJSON, countiesJSON){
 	//console.log(countiesJSON);
-	var color = d3.scale.log()
+
+		d3.select("#usMap").selectAll('g').remove();	
+		var color = d3.scale.log()
 	    .range(["hsl(62,100%,90%)", "hsl(228,30%,20%)"])
 	    .interpolate(d3.interpolateHcl);
 
 		var color = d3.scale.linear()
-	    .domain([65000, 1212120])
+	    .domain([65000, 1212120]) //min, max
 	    .range(["#2ed16f", "#24b55e", "#1d9b50", "#167f41", "#116834", "#054f23"]);	
 		
 		var projection = d3.geo.albersUsa().scale(1200).translate([500, 280]);;
@@ -159,7 +169,7 @@
 	    var width = 960;
 	    var height = 600;
 
-    	map = d3.select('#usMap').append('svg')
+    	map = d3.select('#usMap').append('svg').append('g')
         .style('width', width)
         .style('height', height);
 
@@ -183,6 +193,8 @@
             //caption.html(starter);
         });
 
+        counties.on("click", showCountyData);
+
         var states = map.append('g')
         .attr('class', 'states')
         .selectAll('path')
@@ -191,6 +203,12 @@
         .attr('d', path);
     	var caption = d3.select('#caption');
         //starter = caption.html();
+
+        function showCountyData(d, i){
+        	console.log(d.id);
+        	//console.log(d.id.slice(0,2) + " as " + d.id.slice(2,5) );
+        	countyClickData(d.id.slice(0,2), d.id.slice(2,5))
+        }
 
         function showCaption(d, i) {
 	        //console.log(d.properties.pp);
@@ -204,16 +222,51 @@
 	}
 
 	function prepareURL(varID){
-		varID
+		console.log(varID);
+		var arrayVariables = [];
+		arrayVariables.push(varID);
+		
+		if(arrayVariables.length==1){
+			APIURL = "http://api.census.gov/data/2015/acs1?get=NAME,"+ varID + "&for=county:*&key=" + KEY;
+			console.log(APIURL);
+		}else{
+			var commaSeperatedIDs = "";
 
-		if(varID.length==0){
-			
+			for(var i=0; i<arrayVariables.length; i++){
+				//console.log(varID[i]);
+				commaSeperatedIDs = commaSeperatedIDs + arrayVariables[i] + ",";
+				
+			}
+			APIURL = "http://api.census.gov/data/2015/acs1?get=NAME,"+ commaSeperatedIDs +"&for=county:*&key=" + KEY;
+			console.log(APIURL);
 		}
 
-		APIURL = "http://api.census.gov/data/2015/acs1?get=NAME,B01003_001E&for=county:*&key=" + KEY;
+		getJsonFromURL();
 	}
 
+	function countyClickData(statId, countyId){
+		//	B01003_001E Total Population
+		//	B19013_001E Median house hold income
+		//	B19301_001E Per Capita Income
+		console.log(statId + " " + countyId);
 
+		var countyDataURL = "http://api.census.gov/data/2015/acs1?get=NAME,B01003_001E,B19013_001E,B19301_001E&for=county:*&key=" + KEY;
+		$.getJSON( countyDataURL, function(apidata) {
+			APIData = apidata;
+			console.log(APIData);
+			for(j=1;j<APIData.length; j++){ // j is for APIData's length
+					if(APIData[j][4] == statId && APIData[j][5] == countyId){
+						console.log(APIData[j][1] + " " + APIData[j][2] + " " + APIData[j][3]);
+						var totalPopId = d3.select("#totalPop");
+						var medIncomeId = d3.select("#medianIncome");
+						var capIncomeId = d3.select("#capitaIncome");
+						totalPopId.html("Total Population of County: " + APIData[j][1]);
+						medIncomeId.html("Median Income of County: " + APIData[j][2]);
+						capIncomeId.html("Per Capita Income of County: " + APIData[j][3]);
+					}
+				}
+		});
+	}
 	</script>
 
 	</article>
