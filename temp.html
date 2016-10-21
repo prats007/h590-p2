@@ -60,3 +60,21 @@ function ready(error, countylines, statelines) {
     }
 
 };
+
+
+
+//tooltip
+counties.on('mouseover', showCaption)
+  .on('mousemove', showCaption)
+  .on('mouseout', function() {
+    caption.style("display", 'none');
+  });
+
+var e = window.event;
+var x = e.clientX,
+  y = e.clientY;
+x = x + "px";
+y = y + "px";
+caption.style("top", y); //= (y + 20) + 'px';
+caption.style("left", x); //= (x + 20) + 'px';
+caption.style("display", 'block');
